@@ -6,59 +6,41 @@
 # =========================================
 
 [General]
-bypass-system = true
-
 skip-proxy =
 192.168.0.0/16,
 10.0.0.0/8,
 172.16.0.0/12,
 127.0.0.1,
 localhost,
-*.local,
-captive.apple.com,
-e.crashlytics.com
+*.local
 
-bypass-tun =
-10.0.0.0/8,
-100.64.0.0/10,
-127.0.0.0/8,
-169.254.0.0/16,
-172.16.0.0/12,
-192.0.0.0/24,
-192.0.2.0/24,
-192.88.99.0/24,
-192.168.0.0/16,
-198.18.0.0/15,
-198.51.100.0/24,
-203.0.113.0/24,
-224.0.0.0/4,
-255.255.255.255/32
+dns-server = system, 223.5.5.5, 119.29.29.29
 
-# DNS（办公稳定优先）
-dns-server = 1.1.1.1, 8.8.8.8
 
-# =========================================
 [Rule]
 
-# ---------- 企业 / 工作（最高优先级） ----------
+# 企业系统最高优先级直连
+DOMAIN-KEYWORD,hisense,DIRECT
 DOMAIN-SUFFIX,hisense.com,DIRECT
 DOMAIN-SUFFIX,hisense.com.cn,DIRECT
-DOMAIN-KEYWORD,hisense,DIRECT
+DOMAIN-SUFFIX,hisense.net,DIRECT
 
-# ---------- Apple ----------
+# 内网IP强制直连
+IP-CIDR,10.0.0.0/8,DIRECT
+IP-CIDR,172.16.0.0/12,DIRECT
+IP-CIDR,192.168.0.0/16,DIRECT
+
+# Apple
 RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list,DIRECT
 
-# ---------- 国内 ----------
+# 国内
 RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/China.list,DIRECT
 
-# ---------- OpenAI / ChatGPT ----------
+# OpenAI
 RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OpenAI.list,PROXY
 
-# ---------- 国外 ----------
+# 国外
 RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list,PROXY
 
-# ---------- GEO ----------
 GEOIP,CN,DIRECT
-
-# ---------- 兜底 ----------
 FINAL,PROXY
