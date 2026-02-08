@@ -1,46 +1,37 @@
 # =========================================
-# Shadowrocket Rules - 2026 Auto Update
-# 手机 + 电脑通用
-# 国内直连 / 国外代理 / 规则集自动更新
-# Hisense 强制直连
+# Shadowrocket Rules - 2026 优化版
+# 修复：Telegram 无法登录 / OpenAI 访问优化
+# 保持：Hisense 强制直连
 # =========================================
 
 [General]
-skip-proxy =
-192.168.0.0/16,
-10.0.0.0/8,
-172.16.0.0/12,
-127.0.0.1,
-localhost,
-*.local
-
+# 绕过本地地址
+skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, 127.0.0.1, localhost, *.local
+# DNS 设置
 dns-server = system, 223.5.5.5, 119.29.29.29
 
-
 [Rule]
-
-# 企业系统最高优先级直连
+# --- [第一部分] 强制直连 (公司业务及内网) ---
 DOMAIN-KEYWORD,hisense,DIRECT
 DOMAIN-SUFFIX,hisense.com,DIRECT
 DOMAIN-SUFFIX,hisense.com.cn,DIRECT
 DOMAIN-SUFFIX,hisense.net,DIRECT
-
-# 内网IP强制直连
 IP-CIDR,10.0.0.0/8,DIRECT
 IP-CIDR,172.16.0.0/12,DIRECT
 IP-CIDR,192.168.0.0/16,DIRECT
 
-# Apple
-RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list,DIRECT
-
-# 国内
-RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/China.list,DIRECT
-
-# OpenAI
+# --- [第二部分] 强制代理 (社交与AI) ---
+# 明确加入 Telegram 规则，解决登录转圈问题
+RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list,PROXY
 RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OpenAI.list,PROXY
 
-# 国外
+# --- [第三部分] 规则集代理 (常用国外网站) ---
 RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list,PROXY
 
+# --- [第四部分] 自动直连 (Apple 与国内流量) ---
+RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list,DIRECT
+RULE-SET,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/China.list,DIRECT
 GEOIP,CN,DIRECT
+
+# --- [第五部分] 兜底策略 ---
 FINAL,PROXY
